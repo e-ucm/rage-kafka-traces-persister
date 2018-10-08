@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var config = require('./config');
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(config.mongodb.uri);
 var request = require('request');
@@ -29,6 +28,7 @@ queue.Init(app.config.kafka, function(error){
     if (!fs.existsSync(config.kafka.rawTracesFolder)){
         fs.mkdirSync(config.kafka.rawTracesFolder);
     }
+    
     queue.CreateConsumer(app.config.kafka.topicName, function(message){
         var value = JSON.parse(message.value);
         // Save data into a file
